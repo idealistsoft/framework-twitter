@@ -19,12 +19,14 @@
         "psr-4": {"app\\twitter\\": "src/"}
     },
 	"require": {
-		"php": ">=5.4.0"
+		"php": ">=5.4.0",
+		"ruudk/twitter-oauth": "dev-master"
 	},
 	"require-dev": {
 		"satooshi/php-coveralls": "dev-master",
 		"idealistsoft/framework-bootstrap": "dev-master",
 		"idealistsoft/framework-auth": "dev-master",
+		"idealistsoft/framework-social": "~1.0",
 		"robmorgan/phinx": "*"
 	},
 	"minimum-stability": "dev"
