@@ -221,10 +221,8 @@ class Controller
             $res->redirect( '/profile' );
     }
 
-    public function cron($command)
+    function refreshProfiles()
     {
-        if( $command == 'refresh-profiles' )
-
-            return TwitterProfile::refreshProfiles();
+        return TwitterProfile::refreshProfiles();
     }
 }
