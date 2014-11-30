@@ -2,28 +2,26 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class Retweet extends AbstractMigration
+class retweet extends AbstractMigration
 {
     /**
      * Change Method.
      */
     public function change()
     {
-        if( !$this->hasTable( 'Retweets' ) )
-        {
-            $table = $this->table( 'Retweets', [ 'id' => false, 'primary_key' => [ 'tweet_id', 'twitter_id' ] ] );
-            $table->addColumn( 'tweet_id', 'biginteger', [ 'length' => 20 ] )
-                  ->addColumn( 'twitter_id', 'biginteger', [ 'length' => 20 ] )
+        if (!$this->hasTable('Retweets')) {
+            $table = $this->table('Retweets', [ 'id' => false, 'primary_key' => [ 'tweet_id', 'twitter_id' ] ]);
+            $table->addColumn('tweet_id', 'biginteger', [ 'length' => 20 ])
+                  ->addColumn('twitter_id', 'biginteger', [ 'length' => 20 ])
                   ->create();
         }
     }
-    
+
     /**
      * Migrate Up.
      */
     public function up()
     {
-    
     }
 
     /**
@@ -31,6 +29,5 @@ class Retweet extends AbstractMigration
      */
     public function down()
     {
-
     }
 }

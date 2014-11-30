@@ -2,7 +2,6 @@
 
 use infuse\Database;
 use Pimple\Container;
-
 use app\twitter\libs\TwitterService;
 use app\twitter\models\TwitterProfile;
 
@@ -12,14 +11,14 @@ class TwitterServiceTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        Database::delete( 'TwitterProfiles', [ 'id' => 1 ] );
+        Database::delete('TwitterProfiles', [ 'id' => 1 ]);
 
         self::$profile = new TwitterProfile();
         self::$profile->grantAllPermissions();
-        self::$profile->create( [
+        self::$profile->create([
             'id' => 1,
             'access_token' => 'reftoken',
-            'access_token_secret' => 'refsecret' ] );
+            'access_token_secret' => 'refsecret', ]);
     }
 
     public static function tearDownAfterClass()
@@ -33,11 +32,11 @@ class TwitterServiceTest extends \PHPUnit_Framework_TestCase
     public function testSetAccessTokenFromProfile()
     {
         $app = new Container();
-        $twitter = Mockery::mock( 'Api' );
-        $twitter->shouldReceive( 'setTokens' )->withArgs( [ 'token', 'secret' ] )->once();
+        $twitter = Mockery::mock('Api');
+        $twitter->shouldReceive('setTokens')->withArgs([ 'token', 'secret' ])->once();
         $app[ 'twitter' ] = $twitter;
 
-        $service = new TwitterService( $app );
+        $service = new TwitterService($app);
 
         $profile = new TwitterProfile();
         $profile->access_token = 'token';
@@ -49,11 +48,11 @@ class TwitterServiceTest extends \PHPUnit_Framework_TestCase
     public function testSetAccessTokenFromProfileReference()
     {
         $app = new Container();
-        $twitter = Mockery::mock( 'Api' );
-        $twitter->shouldReceive( 'setTokens' )->withArgs( [ 'reftoken', 'refsecret' ] )->once();
+        $twitter = Mockery::mock('Api');
+        $twitter->shouldReceive('setTokens')->withArgs([ 'reftoken', 'refsecret' ])->once();
         $app[ 'twitter' ] = $twitter;
 
-        $service = new TwitterService( $app );
+        $service = new TwitterService($app);
 
         $profile = new TwitterProfile();
         $profile->most_recently_referenced_by = 1;
@@ -64,31 +63,31 @@ class TwitterServiceTest extends \PHPUnit_Framework_TestCase
     public function testApi()
     {
         $app = new Container();
-        $twitter = Mockery::mock( 'Api' );
-        $twitter->shouldReceive( 'delete' )->withArgs( [ '/test', [ 'test' => true ] ] )
-            ->andReturn( [ 'worked' => true ] )->once();
+        $twitter = Mockery::mock('Api');
+        $twitter->shouldReceive('delete')->withArgs([ '/test', [ 'test' => true ] ])
+            ->andReturn([ 'worked' => true ])->once();
         $app[ 'twitter' ] = $twitter;
 
-        $service = new TwitterService( $app );
+        $service = new TwitterService($app);
 
-        $this->assertEquals( [ 'worked' => true ], $service->api( '/test', 'delete', [ 'test' => true ] ) );
+        $this->assertEquals([ 'worked' => true ], $service->api('/test', 'delete', [ 'test' => true ]));
     }
 
     public function testApiException()
     {
         $app = new Container();
-        $twitter = Mockery::mock( 'Api' );
+        $twitter = Mockery::mock('Api');
         $e = new Exception();
-        $twitter->shouldReceive( 'get' )->withArgs( [ '/test', null ] )
-            ->andThrow( $e )->once();
+        $twitter->shouldReceive('get')->withArgs([ '/test', null ])
+            ->andThrow($e)->once();
         $app[ 'twitter' ] = $twitter;
-        $logger = Mockery::mock( 'Logger' );
-        $logger->shouldReceive( 'error' )->withArgs( [ $e ] )->once();
+        $logger = Mockery::mock('Logger');
+        $logger->shouldReceive('error')->withArgs([ $e ])->once();
         $app[ 'logger' ] = $logger;
 
-        $service = new TwitterService( $app );
+        $service = new TwitterService($app);
 
-        $this->assertFalse( $service->api( '/test', 'get' ) );
+        $this->assertFalse($service->api('/test', 'get'));
     }
 
     public function testApiRateLimitError()
@@ -99,17 +98,17 @@ class TwitterServiceTest extends \PHPUnit_Framework_TestCase
         $response->errors = [ $error ];
 
         $app = new Container();
-        $twitter = Mockery::mock( 'Api' );
-        $twitter->shouldReceive( 'get' )->withArgs( [ '/test', null ] )
-            ->andReturn( $response )->once();
+        $twitter = Mockery::mock('Api');
+        $twitter->shouldReceive('get')->withArgs([ '/test', null ])
+            ->andReturn($response)->once();
         $app[ 'twitter' ] = $twitter;
-        $logger = Mockery::mock( 'Logger' );
-        $logger->shouldReceive( 'error' )->withArgs( [ 'Hit Twitter rate limit on /test with params: null' ] )->once();
+        $logger = Mockery::mock('Logger');
+        $logger->shouldReceive('error')->withArgs([ 'Hit Twitter rate limit on /test with params: null' ])->once();
         $app[ 'logger' ] = $logger;
 
-        $service = new TwitterService( $app );
+        $service = new TwitterService($app);
 
-        $this->assertEquals( $response, $service->api( '/test', 'get' ) );
+        $this->assertEquals($response, $service->api('/test', 'get'));
     }
 
     public function testApiAccessTokenExpiredError()
@@ -119,23 +118,23 @@ class TwitterServiceTest extends \PHPUnit_Framework_TestCase
         $error->code = 89;
         $response->errors = [ $error ];
 
-        $profile = Mockery::mock( 'app\twitter\models\TwitterProfile' );
-        $profile->shouldReceive( 'get' )->andReturn( [ 'access_token' => 'test', 'access_token_secret' => 'test' ] )->once();
-        $profile->shouldReceive( 'grantAllPermissions' )->once();
-        $profile->shouldReceive( 'set' )->withArgs( [ [ 'access_token' => '', 'access_token_secret' => '' ] ] )->once();
-        $profile->shouldReceive( 'enforcePermissions' )->once();
+        $profile = Mockery::mock('app\twitter\models\TwitterProfile');
+        $profile->shouldReceive('get')->andReturn([ 'access_token' => 'test', 'access_token_secret' => 'test' ])->once();
+        $profile->shouldReceive('grantAllPermissions')->once();
+        $profile->shouldReceive('set')->withArgs([ [ 'access_token' => '', 'access_token_secret' => '' ] ])->once();
+        $profile->shouldReceive('enforcePermissions')->once();
 
         $app = new Container();
-        $twitter = Mockery::mock( 'Api' );
-        $twitter->shouldReceive( 'setTokens' )->once();
-        $twitter->shouldReceive( 'get' )->withArgs( [ '/test', null ] )
-            ->andReturn( $response )->once();
+        $twitter = Mockery::mock('Api');
+        $twitter->shouldReceive('setTokens')->once();
+        $twitter->shouldReceive('get')->withArgs([ '/test', null ])
+            ->andReturn($response)->once();
         $app[ 'twitter' ] = $twitter;
 
-        $service = new TwitterService( $app );
-        $service->setAccessTokenFromProfile( $profile );
+        $service = new TwitterService($app);
+        $service->setAccessTokenFromProfile($profile);
 
-        $this->assertEquals( $response, $service->api( '/test', 'get' ) );
+        $this->assertEquals($response, $service->api('/test', 'get'));
     }
 
     public function testApiMustVerifyError()
@@ -146,16 +145,16 @@ class TwitterServiceTest extends \PHPUnit_Framework_TestCase
         $response->errors = [ $error ];
 
         $app = new Container();
-        $twitter = Mockery::mock( 'Api' );
-        $twitter->shouldReceive( 'get' )->withArgs( [ '/test', null ] )
-            ->andReturn( $response )->once();
+        $twitter = Mockery::mock('Api');
+        $twitter->shouldReceive('get')->withArgs([ '/test', null ])
+            ->andReturn($response)->once();
         $app[ 'twitter' ] = $twitter;
-        $logger = Mockery::mock( 'Logger' );
-        $logger->shouldReceive( 'error' )->withArgs( [ 'User must verify twitter login on /test with params: null' ] )->once();
+        $logger = Mockery::mock('Logger');
+        $logger->shouldReceive('error')->withArgs([ 'User must verify twitter login on /test with params: null' ])->once();
         $app[ 'logger' ] = $logger;
 
-        $service = new TwitterService( $app );
+        $service = new TwitterService($app);
 
-        $this->assertEquals( $response, $service->api( '/test', 'get' ) );
+        $this->assertEquals($response, $service->api('/test', 'get'));
     }
 }

@@ -3,7 +3,6 @@
 namespace app\twitter\libs;
 
 use Pimple\Container;
-
 use app\twitter\models\TwitterProfile;
 
 class TwitterService
@@ -17,13 +16,13 @@ class TwitterService
     }
 
     /**
-	 * Sets the appropriate Twitter API access token using
-	 * a given Twitter Profile
-	 *
-	 * @param TwitterProfile $profile
+     * Sets the appropriate Twitter API access token using
+     * a given Twitter Profile
+     *
+     * @param TwitterProfile $profile
      *
      * @return TwitterService
-	 */
+     */
     public function setAccessTokenFromProfile(TwitterProfile $profile)
     {
         $tokens = $profile->get(['access_token', 'access_token_secret']);
@@ -48,15 +47,15 @@ class TwitterService
     }
 
     /**
-	 * Performs an API call on the twitter API (if available) or
-	 * returns a mock response
-	 *
-	 * @param string $endpoint
-	 * @param string $method HTTP method
-	 * @param array $params optional params
-	 *
-	 * @return object
-	 */
+     * Performs an API call on the twitter API (if available) or
+     * returns a mock response
+     *
+     * @param string $endpoint
+     * @param string $method   HTTP method
+     * @param array  $params   optional params
+     *
+     * @return object
+     */
     public function api($endpoint, $method, $params = null)
     {
         $method = strtolower($method);
@@ -72,9 +71,9 @@ class TwitterService
         // log certain errors like rate limiting or expired tokens
         if (is_object($response) && property_exists($response, 'errors')) {
             foreach ($response->errors as $error) {
-                if ($error->code == 88)
-                    $this->app['logger']->error("Hit Twitter rate limit on $endpoint with params: " . json_encode($params));
-                elseif ($error->code == 89) { // expired access token
+                if ($error->code == 88) {
+                    $this->app['logger']->error("Hit Twitter rate limit on $endpoint with params: ".json_encode($params));
+                } elseif ($error->code == 89) { // expired access token
                     // clear the access token of the user's profile
                     if ($this->profile) {
                         $this->profile->grantAllPermissions();
@@ -83,8 +82,9 @@ class TwitterService
                     }
 
                     // $this->app[ 'logger' ]->error( "Twitter access token expired on $endpoint with params: " . json_encode( $params ) );
-                } elseif ($error->code == 231)
-                    $this->app['logger']->error("User must verify twitter login on $endpoint with params: " . json_encode($params));
+                } elseif ($error->code == 231) {
+                    $this->app['logger']->error("User must verify twitter login on $endpoint with params: ".json_encode($params));
+                }
             }
         }
 
