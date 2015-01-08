@@ -27,8 +27,8 @@ class TwitterProfile extends AbstractMigration
               ->addColumn('verified', 'boolean')
               ->addColumn('last_refreshed', 'integer')
               ->addColumn('most_recently_referenced_by', 'integer', [ 'null' => true, 'default' => null ])
-              ->addColumn('created_at', 'integer')
-              ->addColumn('updated_at', 'integer', [ 'null' => true, 'default' => null ])
+              ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+              ->addColumn('updated_at', 'timestamp', ['null' => true, 'default' => null, 'update' => 'CURRENT_TIMESTAMP'])
               ->create();
         }
     }
