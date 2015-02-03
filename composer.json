@@ -1,8 +1,8 @@
 {
-	"name": "idealistsoft/framework-twitter",
-	"description": "Twitter integration for Idealist Framework",
+	"name": "infuse/twitter",
+	"description": "Twitter integration for Infuse Framework",
 	"type": "library",
-	"keywords": ["idealist","framework","social","twitter"],
+	"keywords": ["infuse","framework","social","twitter"],
 	"license": "MIT",
 	"authors": [
 		{
@@ -12,8 +12,8 @@
 		}
 	],
 	"support": {
-		"issues": "https://github.com/idealistsoft/framework-twitter/issues",
-		"source": "https://github.com/idealistsoft/framework-twitter"
+		"issues": "https://github.com/infusephp/twitter/issues",
+		"source": "https://github.com/infusephp/twitter"
 	},
     "autoload": {
         "psr-4": {"app\\twitter\\": "src/"}
@@ -21,11 +21,11 @@
 	"require": {
 		"php": ">=5.4.0",
 		"ruudk/twitter-oauth": "dev-master",
-		"idealistsoft/framework-social": "~1.0"
+		"infuse/social": "~1.0"
 	},
 	"require-dev": {
-		"idealistsoft/framework-bootstrap": "~1.1",
-		"idealistsoft/framework-auth": "~1.0",
+		"infuse/bootstrap": "~1.1",
+		"infuse/auth": "~1.0",
 		"satooshi/php-coveralls": "0.6.1",
 		"robmorgan/phinx": "~0.3",
 		"mockery/mockery": "0.9.1"
