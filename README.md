@@ -16,3 +16,7 @@ Install the package with [composer](http://getcomposer.org):
 ```
 composer require infuse/twitter
 ```
+
+## Acknowledgements
+
+Built with the [ruudk/twitteroauth](https://github.com/ruudk/twitteroauth) package.
