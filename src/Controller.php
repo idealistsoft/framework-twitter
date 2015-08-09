@@ -13,11 +13,6 @@ class Controller
 
     public static $properties = [
         'models' => [ 'TwitterProfile' ],
-        'routes' => [
-            'get /twitter/connect' => 'connect',
-            'get /twitter/callback' => 'callback',
-            'post /twitter/disconnect' => 'disconnect',
-        ],
     ];
 
     public static $scaffoldAdmin;
@@ -26,6 +21,11 @@ class Controller
 
     public function middleware($req, $res)
     {
+        // add routes
+        $this->app->get('/twitter/connect', 'connect')
+                  ->get('/twitter/callback', 'callback')
+                  ->post('/twitter/disconnect', 'disconnect');
+
         $this->app[ 'twitter' ] = function ($c) {
             return new \TwitterOAuth\Api(
                 $c[ 'config' ]->get('twitter.consumerKey'),
@@ -159,7 +159,7 @@ class Controller
                         return new View('switchingAccounts/twitter', [
                             'title' => 'Switch accounts?',
                             'otherUser' => $user,
-                            'otherProfile' => $user->twitterProfile() ]);
+                            'otherProfile' => $user->twitterProfile(), ]);
                     }
                 }
 
