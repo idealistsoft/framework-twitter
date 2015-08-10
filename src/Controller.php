@@ -22,9 +22,9 @@ class Controller
     public function middleware($req, $res)
     {
         // add routes
-        $this->app->get('/twitter/connect', 'connect')
-                  ->get('/twitter/callback', 'callback')
-                  ->post('/twitter/disconnect', 'disconnect');
+        $this->app->get('/twitter/connect', ['twitter\\Controller', 'connect'])
+                  ->get('/twitter/callback', ['twitter\\Controller', 'callback'])
+                  ->post('/twitter/disconnect', ['twitter\\Controller', 'disconnect']);
 
         $this->app[ 'twitter' ] = function ($c) {
             return new \TwitterOAuth\Api(
