@@ -1,6 +1,6 @@
 <?php
 
-use infuse\Database;
+use Infuse\Database;
 use app\twitter\models\TwitterProfile;
 
 class TwitterProfileTest extends \PHPUnit_Framework_TestCase
@@ -10,7 +10,7 @@ class TwitterProfileTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        Database::delete('TwitterProfiles', [ 'id' => 1 ]);
+        Database::delete('TwitterProfiles', ['id' => 1]);
     }
 
     public static function tearDownAfterClass()
@@ -81,8 +81,8 @@ class TwitterProfileTest extends \PHPUnit_Framework_TestCase
 
         $app = TestBootstrap::app();
         $twitter = Mockery::mock('TwitterService');
-        $twitter->shouldReceive('setAccessTokenFromProfile')->withArgs([ $profile ])->once();
-        $twitter->shouldReceive('api')->withArgs([ 'account/verify_credentials', 'get' ])
+        $twitter->shouldReceive('setAccessTokenFromProfile')->withArgs([$profile])->once();
+        $twitter->shouldReceive('api')->withArgs(['account/verify_credentials', 'get'])
             ->andReturn($response)->once();
         $app[ 'twitter_service' ] = $twitter;
 
@@ -98,8 +98,8 @@ class TwitterProfileTest extends \PHPUnit_Framework_TestCase
 
         $app = TestBootstrap::app();
         $twitter = Mockery::mock('TwitterService');
-        $twitter->shouldReceive('setAccessTokenFromProfile')->withArgs([ $profile ])->once();
-        $twitter->shouldReceive('api')->withArgs([ 'account/verify_credentials', 'get' ])
+        $twitter->shouldReceive('setAccessTokenFromProfile')->withArgs([$profile])->once();
+        $twitter->shouldReceive('api')->withArgs(['account/verify_credentials', 'get'])
             ->andReturn($response)->once();
         $app[ 'twitter_service' ] = $twitter;
 
@@ -169,8 +169,8 @@ class TwitterProfileTest extends \PHPUnit_Framework_TestCase
 
         $app = TestBootstrap::app();
         $twitter = Mockery::mock('TwitterService');
-        $twitter->shouldReceive('setAccessTokenFromProfile')->withArgs([ self::$profile ])->once();
-        $twitter->shouldReceive('api')->withArgs([ 'users/show', 'get', [ 'user_id' => 1 ] ])
+        $twitter->shouldReceive('setAccessTokenFromProfile')->withArgs([self::$profile])->once();
+        $twitter->shouldReceive('api')->withArgs(['users/show', 'get', ['user_id' => 1]])
             ->andReturn($response)->once();
         $app[ 'twitter_service' ] = $twitter;
 
@@ -193,7 +193,7 @@ class TwitterProfileTest extends \PHPUnit_Framework_TestCase
             'verified' => true,
             'most_recently_referenced_by' => null, ];
 
-        $profile = self::$profile->toArray([ 'last_refreshed', 'created_at', 'updated_at' ]);
+        $profile = self::$profile->toArray(['last_refreshed', 'created_at', 'updated_at']);
 
         $this->assertEquals($expected, $profile);
     }
@@ -215,7 +215,7 @@ class TwitterProfileTest extends \PHPUnit_Framework_TestCase
         $app = TestBootstrap::app();
         $twitter = Mockery::mock('TwitterService');
         $twitter->shouldReceive('setAccessTokenFromProfile')->once();
-        $twitter->shouldReceive('api')->withArgs([ 'users/show', 'get', [ 'user_id' => 1 ] ])
+        $twitter->shouldReceive('api')->withArgs(['users/show', 'get', ['user_id' => 1]])
             ->andReturn($response)->once();
         $app[ 'twitter_service' ] = $twitter;
 

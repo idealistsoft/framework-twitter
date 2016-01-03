@@ -2,7 +2,7 @@
 
 namespace app\twitter;
 
-use infuse\View;
+use Infuse\View;
 use app\users\models\User;
 use app\twitter\models\TwitterProfile;
 use app\twitter\libs\TwitterService;
@@ -12,7 +12,7 @@ class Controller
     use \InjectApp;
 
     public static $properties = [
-        'models' => [ 'TwitterProfile' ],
+        'models' => ['TwitterProfile'],
     ];
 
     public static $scaffoldAdmin;
